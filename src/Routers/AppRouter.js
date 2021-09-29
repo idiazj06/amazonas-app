@@ -16,6 +16,7 @@ import { PrivateRoute } from "./PrivateRouter";
 import { AuthRouter } from "./AuthRouter";
 import {  getAuth,onAuthStateChanged } from "firebase/auth";
 import { loginSincrono } from "../Actions/actionLogin";
+import Products from "../Pages/Products";
 
 
 export default function AppRouter() {
@@ -39,6 +40,7 @@ export default function AppRouter() {
     }, [dispatch, setChecking])
     return (
         <Router>
+
             <Switch>
                 <PublicRoute
                     path="/auth"
@@ -46,12 +48,23 @@ export default function AppRouter() {
                     isAuthenticated={isLooggedIn}
                 />
 
+                <PublicRoute
+                    path="/products"
+                    component={Products}
+                />
+                <PublicRoute
+                    path="/"
+                    component={Home}
+                />
+{/* 
                 <PrivateRoute
                     exact
                     path="/"
-                    component={Home}
+                    component={''}
                     isAuthenticated={isLooggedIn}
-                />
+                /> */}
+
+                
             </Switch>
         </Router>
     )

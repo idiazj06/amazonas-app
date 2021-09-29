@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import BarraNavegacion from "../Components/BarraNavegacion";
-import Banner from "../Components/Banner/Banner";
 
 export const PrivateRoute = ({
     isAuthenticated,
@@ -13,7 +12,6 @@ export const PrivateRoute = ({
     return (
         <div>
             <BarraNavegacion />
-            <Banner />
             <Route {...rest}
                 component={(props) => (
                     (isAuthenticated)

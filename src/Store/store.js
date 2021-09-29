@@ -1,14 +1,16 @@
-import {applyMiddleware,combineReducers,createStore,compose} from 'redux'
+import { applyMiddleware, combineReducers, createStore, compose } from 'redux'
 import thunk from 'redux-thunk'
-import {loginReducer} from '../Reducers/loginReducer'
+import { loginReducer } from '../Reducers/loginReducer'
 import { registerReducer } from '../Reducers/registerReducer'
+import { addProductReducer } from '../Reducers/productReducer'
 
 
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose
 
 const reducers = combineReducers({
     login: loginReducer,
-    register: registerReducer
+    register: registerReducer,
+    products: addProductReducer
 })
 
 export const store = createStore(
