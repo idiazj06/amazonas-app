@@ -8,6 +8,19 @@ const initialState = {
 
 export const addProductReducer = (state = initialState, action) => {
     switch (action.type) {
+        case typesProducts.crear:
+            return {
+                products: [action.payload]
+            }
+
+        default:
+            return state;
+
+    }
+}
+
+export const getProductReducer = (state = initialState, action) => {
+    switch (action.type) {
         case typesProducts.listar:
             return {
                 products: action.payload

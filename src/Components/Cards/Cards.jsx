@@ -28,7 +28,7 @@ export default function Cards() {
                                     <CardMedia
                                         component="img"
                                         sx={{ width: 240, padding: 2 }}
-                                        image={data.images[0]}
+                                        image={data.images[2]}
                                         alt="Live from space album cover"
                                     />
                                 </Grid>
