@@ -47,14 +47,22 @@ export const listProduct = () => {
                 ...producto.data()
             })
         })
-        dispatch(list(productos))
+        dispatch(listar(productos))
+        dispatch(listDetail(productos))
     }
 }
 
-export const list = (productos) => {
+
+export const listar = (productos) => {
     return {
         type: typesProducts.listar,
         payload: productos
     }
 }
 
+export const listDetail = (productos) => {
+    return {
+        type: typesProducts.detail,
+        payload: productos
+    }
+}

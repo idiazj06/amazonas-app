@@ -31,3 +31,16 @@ export const getProductReducer = (state = initialState, action) => {
 
     }
 }
+
+export const getDetailReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case typesProducts.detail:
+            return {
+                products: action.payload
+            }
+
+        default:
+            return state;
+
+    }
+}

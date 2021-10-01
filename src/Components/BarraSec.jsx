@@ -1,10 +1,19 @@
 import React, { useState } from 'react'
 import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import { Button, Toolbar } from '@mui/material';
+import { Button, Toolbar,List,ListItem,ListItemText   } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { listar } from '../Actions/actionProducts';
+
 
 export default function BarraSec() {
+
+    const dispatch = useDispatch()
+
+    const productos = useSelector(store => store.addDetail)
+    const { products } = productos
 
     const [state, setState] = React.useState({
         left: false,
@@ -22,6 +31,12 @@ export default function BarraSec() {
         setState({ ...state, [anchor]: open });
     };
 
+    const setCategoria = (data) =>{
+        let result = products.filter((products)=>products.categoria?.toLowerCase() === data?.toLowerCase())
+        dispatch(listar(result))
+        console.log(result)
+    }
+
     const list = (anchor) => (
         <Box
             sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
@@ -29,7 +44,13 @@ export default function BarraSec() {
             onClick={toggleDrawer(anchor, false)}
             onKeyDown={toggleDrawer(anchor, false)}
         >
-            asd
+            <List>
+                {['Computadores','Portatiles','Pantallas','Accesorios'].map((data,index)=>(
+                    <ListItem key={data} button onClick={()=>{setCategoria(data)}}>
+                        <ListItemText primary={data}/>
+                    </ListItem>
+                ))}
+            </List>
         </Box>
     );
 

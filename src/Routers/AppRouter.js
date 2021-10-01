@@ -18,6 +18,7 @@ import { AuthRouter } from "./AuthRouter";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { loginSincrono } from "../Actions/actionLogin";
 import Products from "../Pages/Products";
+import Details from "../Pages/Details";
 
 
 export default function AppRouter() {
@@ -52,6 +53,10 @@ export default function AppRouter() {
                 <PublicRoute
                     path="/addprod"
                     component={AgregarProductos}
+                />
+                <PublicRoute
+                    path="/details"
+                    component={Details}
                 />
                 <PublicRoute
                     path="/products"

@@ -8,5 +8,6 @@ export const types ={
 
 export const typesProducts = {
     listar  : 'listar',
-    crear: 'crear'
+    crear: 'crear',
+    detail:'detail'
 }
