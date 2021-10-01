@@ -18,7 +18,6 @@ export default function Products() {
     return (
         <div>
             <Cards/>
-            <ProductsForm/>
         </div>
     )
 }

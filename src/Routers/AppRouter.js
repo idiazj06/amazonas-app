@@ -11,10 +11,11 @@ import {
 
 
 import Home from "../Pages/Home";
+import AgregarProductos from "../Pages/AgregarProductos";
 import { PublicRoute } from "./PublicRouter";
 import { PrivateRoute } from "./PrivateRouter";
 import { AuthRouter } from "./AuthRouter";
-import {  getAuth,onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { loginSincrono } from "../Actions/actionLogin";
 import Products from "../Pages/Products";
 
@@ -49,6 +50,10 @@ export default function AppRouter() {
                 />
 
                 <PublicRoute
+                    path="/addprod"
+                    component={AgregarProductos}
+                />
+                <PublicRoute
                     path="/products"
                     component={Products}
                 />
@@ -56,7 +61,9 @@ export default function AppRouter() {
                     path="/"
                     component={Home}
                 />
-{/* 
+
+                
+                {/* 
                 <PrivateRoute
                     exact
                     path="/"
@@ -64,7 +71,7 @@ export default function AppRouter() {
                     isAuthenticated={isLooggedIn}
                 /> */}
 
-                
+
             </Switch>
         </Router>
     )

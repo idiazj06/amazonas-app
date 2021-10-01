@@ -1,25 +1,31 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Card, Container, CardMedia, Typography, Grid, Box, Paper } from '@mui/material';
-import { positions } from '@mui/system';
+import { Card, Container, CardMedia, Typography, Grid, Box, Button } from '@mui/material';
+import { useHistory } from "react-router-dom";
 
 
 
 
 export default function Cards() {
 
+    let history = useHistory();
+
     const productos = useSelector(store => store.products)
     const { products } = productos
 
     console.log(products)
 
+    const handleNav = () =>{
+        history.push("/addprod");
+    }
+
     return (
         <Container>
+            <Button onClick={handleNav}>Agregar nuevo producto</Button>
             {
                 products.map(data => (
-
                     <Box >
-                        <Card  sx={{marginTop:5}}>
+                        <Card sx={{ marginTop: 5 }}>
                             <Grid container
                                 direction="row"
                                 justifyContent="center"
@@ -49,8 +55,6 @@ export default function Cards() {
                             </Grid>
                         </Card>
                     </Box>
-
-
                 ))
             }
         </Container>

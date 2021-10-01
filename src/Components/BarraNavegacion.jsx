@@ -16,25 +16,32 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 import { useDispatch } from 'react-redux'
 import { startLogout } from '../Actions/actionLogin'
 
 
 const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  backgroundColor: 'white',
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: 'whitesmoke',
   },
-  marginRight: theme.spacing(2),
   marginLeft: 0,
   width: '100%',
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(3),
     width: 'auto',
   },
+  color: 'black',
+  display: 'flex',
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: 2,
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -45,6 +52,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  padding: 2,
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -168,73 +176,76 @@ export default function BarraNavegacion() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
+        <Toolbar sx={{ backgroundColor: "#131921" }}>
+          <img src="https://res.cloudinary.com/duaokxfsp/image/upload/v1632197422/Amazonas/logo-amazon_wzvnaw.png" alt="" />
           <Typography
-            variant="h6"
+            variant="p"
             noWrap
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
+            sx={{ display: { xs: "none", sm: "block" }, ml: 5 }}
           >
-            MUI
+            <LocationOnOutlinedIcon />
           </Typography>
-          <Search>
+          <Typography
+            variant="p"
+            noWrap
+            component="div"
+            sx={{ display: { xs: "none", sm: "block" } }}
+          >
+            Hola
+            <p>Elige tu dirección</p>
+          </Typography>
+          <Search >
             <SearchIconWrapper>
-              <SearchIcon />
+
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
+
             />
+            <SearchIcon />
           </Search>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
+
+          <Box spacing={2}sx={{display:'flex',alignItems:'flex-end',justifyContent:'space-between',marginLeft:2}}>
+            <Typography
+              variant="div"
+              noWrap
+              component="div"
+              className="pointer" sx={{padding:1}}
             >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
+              Hola,Identificate
+              <Box sx={{display:'flex'}}>
+                <p>Cerrar sesion</p>
+                <ArrowDropDownOutlinedIcon/>
+              </Box>
+            </Typography>
+            <Typography
+              variant="div"
+              noWrap
+              component="div"
+              className="pointer" sx={{padding:1}}
             >
-              <AccountCircle />
-            </IconButton>
-
-
-
-            <Button
-              sx={{ color: 'white' }}
-              variant="outlined"
-              onClick={handleLogout}
-            >LogOut</Button>
-
-
-
-
+              Devolciones
+              <Box sx={{display:'flex'}}>
+                Y Pedidos
+              </Box>
+            </Typography><Typography variant="div" noWrap component="div" sx={{padding:1}} >
+              <ShoppingCartOutlinedIcon/>
+              Carrito
+            </Typography>
+            
+            
+             {/* <Typography variant="div" noWrap component="div" sx={{padding:1}} >
+              Devoluciones
+              <p>Y Pedidos</p>
+            </Typography>
+            <Typography variant="div" noWrap component="div" sx={{padding:1}}>
+              
+            </Typography> */}
+            
           </Box>
+
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
