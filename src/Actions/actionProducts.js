@@ -1,8 +1,49 @@
-import { addDoc, collection, getDocs } from "@firebase/firestore";
+import { addDoc, collection, getDocs, updateDoc, doc } from "@firebase/firestore";
 import { db } from "../Firebase/firebaseConfig";
 import { typesProducts } from "../Types/types";
 
 
+
+export const updateProduct = (id,nombre, descripcion, marca, precio, capacidad, envioGratis, images) => {
+    return  async (dispatch,getState) => {
+        const newProduct = {
+            nombre:nombre,
+            descripcion:descripcion,
+            marca:marca,
+            precio:precio,
+            capacidad:capacidad,
+            envioGratis:envioGratis,
+            images:images
+        }
+        console.log(newProduct)
+
+        console.log(id)
+        
+
+        // console.log(id)
+
+        const docRef = await doc(db, `productos`, `${id}`);
+
+        await updateDoc(docRef,{
+            nombre:nombre,
+            descripcion:descripcion,
+            marca:marca,
+            precio:precio,
+            capacidad:capacidad,
+            envioGratis:envioGratis,
+            images:images
+        })
+    }    
+}
+
+
+
+export const actualizar = (producto) => {
+    return {
+        type: typesProducts.actualizar,
+        payload: producto
+    }
+}
 
 export const crearProduct = (nombre, descripcion, marca, precio, capacidad, envioGratis, images) => {
     return async (dispatch) => {
@@ -28,7 +69,6 @@ export const crearProduct = (nombre, descripcion, marca, precio, capacidad, envi
 
 
 
-
 export const crear = (producto) => {
     return {
         type: typesProducts.crear,
@@ -44,6 +84,7 @@ export const listProduct = () => {
         const productos = []
         querySnapshot.forEach((producto) => {
             productos.push({
+                id: producto.id,
                 ...producto.data()
             })
         })

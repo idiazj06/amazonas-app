@@ -1,36 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Stepper, Step, StepLabel, Button, Container, Box, Grid, TextField, Typography } from '@mui/material';
+import { Stepper, Step, StepLabel, Button, Container, Box, Grid, TextField, Typography, Stack, InputLabel, IconButton, MenuItem, Select, TextareaAutosize } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import Stack from '@mui/material/Stack';
 import { useForm } from '../Hooks/useForm'
 import { useDispatch } from 'react-redux';
 import { fileUpload } from '../Helpers/FileUpload';
 import { crearProduct } from '../Actions/actionProducts'
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import TextareaAutosize from '@mui/material/TextareaAutosize';
 import { useHistory } from "react-router-dom";
-
-
 
 const Input = styled('input')({
   display: 'none',
 });
 
-
-
-
 export default function ProductsForm() {
   let history = useHistory();
-
   const dispatch = useDispatch()
+
+  let prueba = []
 
   const [tipoEnvio, setTipoEnvio] = useState(true)
   const [description, setDescription] = useState('')
   const [imagenes, setImagenes] = useState('')
+  const [activeStep, setActiveStep] = useState(0)
 
   const [values, handleInputChange, reset] = useForm({
     nombre: '',
@@ -41,19 +32,10 @@ export default function ProductsForm() {
     envioGratis: '',
     images: ''
   })
-
   let { nombre, descripcion, marca, precio, capacidad, envioGratis, images } = values;
-
-
-
-  let prueba = []
-  let descripcionValues = ''
-
 
   const handleFileChange = e => {
     const files = e.target.files
-
-
     for (let i = 0; i < files.length; i++) {
       let file = files[i]
       fileUpload(file)
@@ -64,9 +46,8 @@ export default function ProductsForm() {
         }).catch(err => {
           console.log(err.message)
         })
-
     }
-  }  
+  }
 
   const handleEnvio = (e) => {
     setTipoEnvio(e.target.value)
@@ -75,13 +56,9 @@ export default function ProductsForm() {
 
   let timeout = null;
   const handleDescription = ({ target }) => {
-    
     clearTimeout(timeout);
-
-    // Make a new timeout set to go off in 1000ms (1 second)
-    timeout = setTimeout(() => setDescription([...description,target.value])    
-    , 500)
-  
+    timeout = setTimeout(() => setDescription([...description, target.value])
+      , 500)
   }
 
   const handleReset = () => {
@@ -89,14 +66,8 @@ export default function ProductsForm() {
     setActiveStep(0)
   }
 
-
   //Manejadores Stepper
-  const [activeStep, setActiveStep] = useState(0)
-
   const handleNextStep = () => {
-    console.log(description)
-    console.log(prueba)
-    console.log(imagenes)
     if (activeStep < 4) {
       setActiveStep((actual) => actual + 1)
     }
@@ -111,7 +82,6 @@ export default function ProductsForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(tipoEnvio)
     images = imagenes
     envioGratis = tipoEnvio
     descripcion = description
@@ -119,12 +89,9 @@ export default function ProductsForm() {
     setActiveStep(0)
   }
 
-  const handleNav = () =>{
+  const handleNav = () => {
     history.push("/products");
-}
-
-
-
+  }
   return (
     <>
       <Container >
@@ -292,5 +259,7 @@ export default function ProductsForm() {
       </Container>
 
     </>
+
+
   );
 }

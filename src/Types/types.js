@@ -9,5 +9,6 @@ export const types ={
 export const typesProducts = {
     listar  : 'listar',
     crear: 'crear',
-    detail:'detail'
+    detail:'detail',
+    actualizar:'actualizar'
 }

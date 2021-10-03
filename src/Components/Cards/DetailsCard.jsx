@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Grid, Box, Typography, Divider } from '@mui/material';
+import { Grid, Box, Typography, Divider, Button } from '@mui/material';
 import ReactImageMagnify from "react-image-magnify";
+import DrawerEditar from './DrawerEditar';
 
 export default function DetailsCard() {
 
@@ -70,6 +71,12 @@ export default function DetailsCard() {
                         </ul>
 
                     </Grid>
+                    <Grid item xs={8} md={2}>
+                    <DrawerEditar productos={productos}/>
+                           
+                    </Grid>
+
+                    
 
                 </Grid>
             </Box>

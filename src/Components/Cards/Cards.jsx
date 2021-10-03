@@ -17,6 +17,8 @@ export default function Cards() {
     const productos = useSelector(store => store.products)
     const { products } = productos
 
+    console.log(products)
+
     const handleNav = () =>{
         history.push("/addprod");
     }
