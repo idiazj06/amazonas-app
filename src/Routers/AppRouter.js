@@ -40,6 +40,10 @@ export default function AppRouter() {
             setChecking(false)
         })
     }, [dispatch, setChecking])
+
+    if (checking) {
+        return <h1>Espere...</h1>;
+      }
     return (
         <Router>
 
@@ -50,21 +54,26 @@ export default function AppRouter() {
                     isAuthenticated={isLooggedIn}
                 />
 
-                <PublicRoute
+                <PrivateRoute
                     path="/addprod"
                     component={AgregarProductos}
+                    exact
+                    isAuthenticated={isLooggedIn}
                 />
                 <PublicRoute
                     path="/details"
                     component={Details}
+                    isAuthenticated={isLooggedIn}
                 />
                 <PublicRoute
                     path="/products"
                     component={Products}
+                    isAuthenticated={isLooggedIn}
                 />
                 <PublicRoute
                     path="/"
                     component={Home}
+                    // isAuthenticated={isLooggedIn}
                 />
 
                 

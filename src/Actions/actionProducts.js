@@ -1,8 +1,25 @@
-import { addDoc, collection, getDocs, updateDoc, doc } from "@firebase/firestore";
+import { addDoc, collection, getDocs, updateDoc, doc, deleteDoc } from "@firebase/firestore";
 import { db } from "../Firebase/firebaseConfig";
 import { typesProducts } from "../Types/types";
 
 
+
+export const deleteProduct = (id) => {
+    return  async (dispatch,getState) => {
+       
+
+        await deleteDoc(doc(db, `productos`, `${id}`));
+    }    
+}
+
+
+
+export const eliminar = (producto) => {
+    return {
+        type: typesProducts.eliminar,
+        payload: producto
+    }
+}
 
 export const updateProduct = (id,nombre, descripcion, marca, precio, capacidad, envioGratis, images) => {
     return  async (dispatch,getState) => {

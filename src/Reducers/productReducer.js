@@ -6,6 +6,19 @@ const initialState = {
     products: []
 }
 
+export const deleteProductReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case typesProducts.crear:
+            return {
+                products: action.payload
+            }
+
+        default:
+            return state;
+
+    }
+}
+
 export const updateProductReducer = (state = initialState, action) => {
     switch (action.type) {
         case typesProducts.crear:

@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 import { useForm } from '../../Hooks/useForm'
 import { doc, updateDoc } from '@firebase/firestore';
 import { db } from '../../Firebase/firebaseConfig';
-import { listDetail, updateProduct } from '../../Actions/actionProducts';
+import { deleteProduct, listDetail, updateProduct } from '../../Actions/actionProducts';
 import { useDispatch } from 'react-redux';
 import { fileUpload } from '../../Helpers/FileUpload';
 import { useImages } from '../../Hooks/useImages';
@@ -114,6 +114,9 @@ export default function DrawerEditar({ productos }) {
         setValues({ ...values, images: imagenes.images })
         dispatch(updateProduct(id, values.nombre, description, marca, precio, capacidad, envioGratis, imagenes.images))
         dispatch(listDetail(values))
+    }
+    const handleDelete = () => {
+        dispatch(deleteProduct(id))
     }
 
 
@@ -305,6 +308,7 @@ export default function DrawerEditar({ productos }) {
     return (
         <>
             <Button onClick={toggleDrawer('top', true)} variant='contained' sx={{ color: 'white' }}>EDITAR</Button>
+            <Button onClick={toggleDrawer('top', true)} variant='contained' sx={{ color: 'red' }} onClick={handleDelete}>ELIMINAR</Button>
 
             <SwipeableDrawer
                 anchor={'top'}

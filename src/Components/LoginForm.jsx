@@ -1,10 +1,12 @@
 import React from 'react'
-import {Button,CssBaseline,TextField,FormControlLabel,Checkbox,Link,Grid, Box,Typography,Container} from '@mui/material';
+import { Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Grid, Box, Typography, Container } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import GoogleIcon from '@mui/icons-material/Google';
-import {useForm} from '../Hooks/useForm'
+import { useForm } from '../Hooks/useForm'
 import { loginEmailPassword, loginGoogle } from '../Actions/actionLogin';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
 function Copyright(props) {
     return (
@@ -22,14 +24,37 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function LoginForm() {
+
+    const validationSchema = Yup.object({
+        email: Yup
+            .string('Enter your email')
+            .email('Ingresa un Email valido')
+            .required('El campo Email es requerido'),
+        password: Yup
+            .string('Enter your password')
+            .min(6, 'La contraseña debe tener al menos 6 caracteres')
+            .required('El campo Contraseña es requerido'),
+    });
+
+    const formik = useFormik({
+        initialValues: {
+            email: 'foobar@example.com',
+            password: 'foobar',
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            alert(JSON.stringify(values, null, 2));
+        },
+    });
+
     const dispatch = useDispatch();
 
-    const [ values, handleInputChange, reset ] = useForm({
+    const [values, handleInputChange, reset] = useForm({
         email: '',
         password: ''
     })
 
-    const {email,password} = values
+    const { email, password } = values
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -53,11 +78,11 @@ export default function LoginForm() {
                     }}
                 >
                     <img src="https://res.cloudinary.com/duaokxfsp/image/upload/v1632869904/Amazonas/logo-amazon_1_yj6mkj.png" alt="" />
-                   
-                    <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
-                    <Typography component="h1" variant="h5">
-                        Iniciar Sesion
-                    </Typography>
+
+                    <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
+                        <Typography component="h1" variant="h5">
+                            Iniciar Sesion
+                        </Typography>
                         <TextField
                             margin="normal"
                             required
@@ -67,7 +92,9 @@ export default function LoginForm() {
                             name="email"
                             autoComplete="email"
                             autoFocus
-                            onChange={handleInputChange}
+                            onChange={formik.handleChange}
+                            error={formik.touched.email && Boolean(formik.errors.email)}
+                            helperText={formik.touched.email && formik.errors.email}
                         />
                         <TextField
                             margin="normal"
@@ -78,20 +105,19 @@ export default function LoginForm() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
-                            onChange={handleInputChange}
+                            onChange={formik.handleChange}
+                            error={formik.touched.password && Boolean(formik.errors.password)}
+                            helperText={formik.touched.password && formik.errors.password}
                         />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
+                        
                         <Button
-                            type="submit"
+                            type="button"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                             onClick={handleGoogle}
                         >
-                            <GoogleIcon sx={{marginRight:2}}/>Continuar con google
+                            <GoogleIcon sx={{ marginRight: 2 }} />Continuar con google
                         </Button>
                         <Button
                             type="submit"

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
@@ -22,6 +22,9 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 import { useDispatch } from 'react-redux'
 import { startLogout } from '../Actions/actionLogin'
+import { useLocation } from '../Hooks/useLocation';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -69,9 +72,21 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function BarraNavegacion() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+export default function BarraNavegacion({ login }) {
+  let history = useHistory();
+  const logged = useSelector(store => store.login)
+  const { name } = logged
+
+  const handleNav = () => {
+    history.push("/addprod");
+  }
+  const handleLogin = () => {
+    history.push("/auth/login");
+  }
+
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -170,8 +185,17 @@ export default function BarraNavegacion() {
   const dispatch = useDispatch()
   const handleLogout = () => {
     dispatch(startLogout())
+  }
+
+  const [country, region, watch, setWatch, ubicacion] = useLocation()
+
+
+  const handleLocation = () => {
+    setWatch(true)
 
   }
+
+
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -186,15 +210,33 @@ export default function BarraNavegacion() {
           >
             <LocationOnOutlinedIcon />
           </Typography>
-          <Typography
-            variant="p"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            Hola
-            <p>Elige tu dirección</p>
-          </Typography>
+
+          {
+            ubicacion ?
+              <Typography
+                variant="p"
+                noWrap
+                component="div"
+                sx={{ display: { xs: "none", sm: "block" } }}
+              >
+                {country} ,<br />
+                {region}
+              </Typography>
+              :
+              <Typography
+                variant="p"
+                noWrap
+                component="div"
+                sx={{ display: { xs: "none", sm: "block" } }}
+                onClick={handleLocation}
+              >
+                Hola
+                <p>Elige tu dirección</p>
+              </Typography>
+          }
+
+
+
           <Search >
             <SearchIconWrapper>
 
@@ -207,43 +249,39 @@ export default function BarraNavegacion() {
             <SearchIcon />
           </Search>
 
-          <Box spacing={2}sx={{display:'flex',alignItems:'flex-end',justifyContent:'space-between',marginLeft:2}}>
-            <Typography
-              variant="div"
-              noWrap
-              component="div"
-              className="pointer" sx={{padding:1}}
-            >
-              Hola,Identificate
-              <Box sx={{display:'flex'}}>
-                <p>Cerrar sesion</p>
-                <ArrowDropDownOutlinedIcon/>
-              </Box>
-            </Typography>
-            <Typography
-              variant="div"
-              noWrap
-              component="div"
-              className="pointer" sx={{padding:1}}
-            >
-              Devolciones
-              <Box sx={{display:'flex'}}>
-                Y Pedidos
-              </Box>
-            </Typography><Typography variant="div" noWrap component="div" sx={{padding:1}} >
-              <ShoppingCartOutlinedIcon/>
-              Carrito
-            </Typography>
-            
-            
-             {/* <Typography variant="div" noWrap component="div" sx={{padding:1}} >
-              Devoluciones
-              <p>Y Pedidos</p>
-            </Typography>
-            <Typography variant="div" noWrap component="div" sx={{padding:1}}>
-              
-            </Typography> */}
-            
+          <Box spacing={2} sx={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginLeft: 2 }}>
+
+            {login ?
+              <Typography
+                variant="div"
+                noWrap
+                component="div"
+                className="pointer" sx={{ padding: 1, cursor: 'pointer'}}
+                onClick={handleLogout}
+
+              >
+                Hola,{name}
+                <Box sx={{ display: 'flex' }}>
+                  <p>Cerrar sesion</p>
+                </Box>
+              </Typography>
+              :
+              <Typography
+                variant="div"
+                noWrap
+                component="div"
+                className="pointer" sx={{ padding: 1, cursor: 'pointer'}}
+                onClick={handleLogin}
+              >
+                Hola,Identificate
+                <Box sx={{ display: 'flex' }}>
+                  <p>Iniciar sesion</p>
+                </Box>
+              </Typography>
+            }
+
+            <Button sx={{color:'white'}} onClick={handleNav}>Agregar <br/>nuevo producto</Button>
+
           </Box>
 
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

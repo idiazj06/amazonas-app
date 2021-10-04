@@ -9,11 +9,11 @@ export const PublicRoute = ({
     component: Component,
     ...rest
 }) => {
-
+    const login = false
     return (
 
         <>
-            <BarraNavegacion />
+            <BarraNavegacion login={(isAuthenticated)?true:false} />
             <BarraSec/>
             <Route {...rest}
                 component={(props) => (

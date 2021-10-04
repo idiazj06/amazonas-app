@@ -90,7 +90,7 @@ export default function ProductsForm() {
   }
 
   const handleNav = () => {
-    history.push("/products");
+    history.push("/");
   }
   return (
     <>

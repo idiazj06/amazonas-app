@@ -8,10 +8,13 @@ export const PrivateRoute = ({
     component: Component,
     ...rest
 }) => {
-
+    const login = true
     return (
         <div>
-            <BarraNavegacion />
+
+            <BarraNavegacion
+                login={(isAuthenticated)?true:false}
+            />
             <Route {...rest}
                 component={(props) => (
                     (isAuthenticated)

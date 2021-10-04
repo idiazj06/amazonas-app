@@ -10,5 +10,6 @@ export const typesProducts = {
     listar  : 'listar',
     crear: 'crear',
     detail:'detail',
-    actualizar:'actualizar'
+    actualizar:'actualizar',
+    eliminar:'eliminar'
 }

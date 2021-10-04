@@ -25,7 +25,7 @@ export default function Cards() {
 
     return (
         <Container>
-            <Button onClick={handleNav}>Agregar nuevo producto</Button>
+            
             {
                 products.map(data => (
                     <Box >
