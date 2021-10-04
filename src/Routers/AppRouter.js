@@ -73,6 +73,7 @@ export default function AppRouter() {
                 <PublicRoute
                     path="/"
                     component={Home}
+                    exact
                     // isAuthenticated={isLooggedIn}
                 />
 

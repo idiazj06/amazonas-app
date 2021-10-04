@@ -8,7 +8,6 @@ export const PrivateRoute = ({
     component: Component,
     ...rest
 }) => {
-    const login = true
     return (
         <div>
 
