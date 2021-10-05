@@ -1,6 +1,6 @@
 import {types} from '../Types/types'
 import { getAuth, signInWithPopup,signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { google } from '../Firebase/firebaseConfig';
+import { facebook, google } from '../Firebase/firebaseConfig';
 
 
 export const loginEmailPassword = (email,password) =>{
@@ -27,6 +27,20 @@ export const loginGoogle = () => {
     return(dispatch) => {
         const auth = getAuth();
         signInWithPopup(auth,google)
+        .then(({user}) => {
+            dispatch(loginSincrono(user.uid,user.displayName))
+        })
+        .catch(e =>{
+            console.log(e);
+        })
+    }
+}
+
+export const loginFacebook = () => {
+
+    return(dispatch) => {
+        const auth = getAuth();
+        signInWithPopup(auth,facebook)
         .then(({user}) => {
             dispatch(loginSincrono(user.uid,user.displayName))
         })

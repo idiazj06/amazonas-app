@@ -3,11 +3,12 @@ import { Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useForm } from '../Hooks/useForm'
-import { loginEmailPassword, loginGoogle } from '../Actions/actionLogin';
+import { loginEmailPassword, loginFacebook, loginGoogle } from '../Actions/actionLogin';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { Link } from 'react-router-dom';
+import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 
 
 function Copyright(props) {
@@ -68,6 +69,9 @@ export default function LoginForm() {
     const handleGoogle = (e) => {
         dispatch(loginGoogle())
     };
+    const handleFacebook = (e) => {
+        dispatch(loginFacebook())
+    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -122,7 +126,18 @@ export default function LoginForm() {
                             onClick={handleGoogle}
                             sx={{backgroundColor:'#DE5246',marginTop:2,marginBottom:1}}
                         >
-                            <GoogleIcon sx={{ marginRight: 2 }} />Continuar con google
+                            <GoogleIcon sx={{ marginRight: 2 }} />Continuar con Google
+                        </Button>
+
+                        <Button
+                            type="button"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                            onClick={handleFacebook}
+                            sx={{marginBottom:3}}
+                        >
+                            <FacebookOutlinedIcon sx={{ marginRight: 2 }} />Continuar con Facebook
                         </Button>
                         <Button
                             type="submit"
