@@ -12,13 +12,13 @@ export const PublicRoute = ({
     return (
 
         <>
-            <BarraNavegacion login={(isAuthenticated)?false:true} />
+            
 
-            <BarraSec/>
+            
             <Route {...rest}
                 component={(props) => (
                     (isAuthenticated)
-                        ? (<Redirect to="/" />)
+                        ? (<Redirect to="/products" />)
                         : (<Component {...props} />)
                 )}
             />

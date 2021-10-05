@@ -10,9 +10,11 @@ export default function DetailsCard() {
 
     const productos = useSelector(store => store.addDetail)
 
+    
+
     const { images, nombre, marca, precio, envioGratis, descripcion } = productos.products
     const [imgMostrar, setImgMostrar] = useState(`${images[0]}`)
-    console.log(images[0])
+    console.log(images)
 
     return (
         <div>

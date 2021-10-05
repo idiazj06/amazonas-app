@@ -42,8 +42,8 @@ export default function AppRouter() {
     }, [dispatch, setChecking])
 
     if (checking) {
-        return <h1>Espere...</h1>;
-      }
+        return <h1>Cargando...</h1>;
+    }
     return (
         <Router>
 
@@ -60,24 +60,18 @@ export default function AppRouter() {
                     exact
                     isAuthenticated={isLooggedIn}
                 />
-                <PublicRoute
+                <PrivateRoute
                     path="/details"
                     component={Details}
                     isAuthenticated={isLooggedIn}
                 />
-                <PublicRoute
+                <PrivateRoute
                     path="/products"
                     component={Products}
                     isAuthenticated={isLooggedIn}
                 />
-                <PublicRoute
-                    path="/"
-                    component={Home}
-                    exact
-                    // isAuthenticated={isLooggedIn}
-                />
 
-                
+
                 {/* 
                 <PrivateRoute
                     exact
@@ -85,7 +79,7 @@ export default function AppRouter() {
                     component={''}
                     isAuthenticated={isLooggedIn}
                 /> */}
-
+                <Redirect to="/auth" />
 
             </Switch>
         </Router>

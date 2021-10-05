@@ -25,6 +25,7 @@ import { startLogout } from '../Actions/actionLogin'
 import { useLocation } from '../Hooks/useLocation';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import { listar } from '../Actions/actionProducts';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -75,6 +76,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function BarraNavegacion({ login }) {
   let history = useHistory();
   const logged = useSelector(store => store.login)
+  const productos = useSelector(store => store.addDetail)
+
+
+  const {products} = productos
+
+
+
+
   const { name } = logged
 
   const handleNav = () => {
@@ -194,6 +203,15 @@ export default function BarraNavegacion({ login }) {
     setWatch(true)
 
   }
+  const [searchValue, setSearchValue] = useState('')
+
+  const handleSearch = (e) =>{
+    e.preventDefault()
+    setSearchValue(e.target.value)
+    
+    let searchFilter = products.filter(busq =>busq.nombre.toLowerCase().includes(searchValue.toLowerCase()))
+    dispatch(listar(searchFilter))
+  }
 
 
 
@@ -244,12 +262,13 @@ export default function BarraNavegacion({ login }) {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
+              onChange={handleSearch}
 
             />
             <SearchIcon />
           </Search>
 
-          <Box spacing={2} sx={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginLeft: 2 }}>
+          <Box spacing={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginLeft: 2 }}>
 
             {login ?
               <Typography

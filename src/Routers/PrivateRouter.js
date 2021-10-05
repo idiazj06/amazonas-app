@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import BarraNavegacion from "../Components/BarraNavegacion";
+import BarraSec from '../Components/BarraSec';
 
 export const PrivateRoute = ({
     isAuthenticated,
@@ -14,6 +15,7 @@ export const PrivateRoute = ({
             <BarraNavegacion
                 login={(isAuthenticated)?true:false}
             />
+            <BarraSec/>
             <Route {...rest}
                 component={(props) => (
                     (isAuthenticated)

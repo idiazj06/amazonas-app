@@ -112,8 +112,10 @@ export default function DrawerEditar({ productos }) {
         console.log(id)
         setValues({ ...values, descripcion: description })
         setValues({ ...values, images: imagenes.images })
-        dispatch(updateProduct(id, values.nombre, description, marca, precio, capacidad, envioGratis, imagenes.images))
-        dispatch(listDetail(values))
+        console.log(values)
+        console.log(imagenes)
+        // dispatch(updateProduct(id, values.nombre, description, marca, precio, capacidad, envioGratis, imagenes.images))
+        // dispatch(listDetail(values))
     }
     const handleDelete = () => {
         dispatch(deleteProduct(id))

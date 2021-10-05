@@ -15,7 +15,6 @@ export const useImages = (initialState) => {
             const files = e.target.files
             for (let i = 0; i < files.length; i++) {
                 let file = files[i]
-                console.log(i)
                 fileUpload(file)
                     .then(resp => {
                         console.log(resp)

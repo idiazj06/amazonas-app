@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux';
 import { fileUpload } from '../Helpers/FileUpload';
 import { crearProduct } from '../Actions/actionProducts'
 import { useHistory } from "react-router-dom";
+import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
+import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 
 const Input = styled('input')({
   display: 'none',
@@ -16,49 +18,43 @@ export default function ProductsForm() {
   let history = useHistory();
   const dispatch = useDispatch()
 
-  let prueba = []
-
-  const [tipoEnvio, setTipoEnvio] = useState(true)
-  const [description, setDescription] = useState('')
-  const [imagenes, setImagenes] = useState('')
+  const [description, setDescription] = useState([])
+  const [imagenes, setImagenes] = useState([]);
   const [activeStep, setActiveStep] = useState(0)
 
-  const [values, handleInputChange, reset] = useForm({
+  const [values, handleInputChange, reset, setValues] = useForm({
     nombre: '',
     descripcion: '',
     marca: '',
     precio: '',
+    categoria:'',
     capacidad: '',
     envioGratis: '',
     images: ''
   })
-  let { nombre, descripcion, marca, precio, capacidad, envioGratis, images } = values;
+  let { nombre, descripcion, marca, precio,categoria, capacidad, envioGratis, images } = values;
 
-  const handleFileChange = e => {
+  const handleClickFiles = () => {
+    document.querySelector('#inputFileChanger').click()
+  }
+
+  const handleUploadImage = (e) => {
     const files = e.target.files
     for (let i = 0; i < files.length; i++) {
       let file = files[i]
       fileUpload(file)
         .then(resp => {
-          prueba.push(resp)
-          console.log(resp)
-          setImagenes(prueba)
+          imagenes[i] = resp
+          setValues({ ...values, images: imagenes})
         }).catch(err => {
           console.log(err.message)
         })
     }
   }
 
-  const handleEnvio = (e) => {
-    setTipoEnvio(e.target.value)
-    console.log(tipoEnvio)
-  }
-
-  let timeout = null;
   const handleDescription = ({ target }) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => setDescription([...description, target.value])
-      , 500)
+    description[target.name] = target.value
+    setValues({ ...values, descripcion: description })
   }
 
   const handleReset = () => {
@@ -82,16 +78,17 @@ export default function ProductsForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    images = imagenes
-    envioGratis = tipoEnvio
-    descripcion = description
-    dispatch(crearProduct(nombre, descripcion, marca, precio, capacidad, envioGratis, images))
+    console.log(values)
+    console.log(imagenes)
+    dispatch(crearProduct(  nombre, descripcion, marca, precio,categoria, capacidad, envioGratis, images ))
+    reset()
     setActiveStep(0)
   }
 
   const handleNav = () => {
     history.push("/");
   }
+
   return (
     <>
       <Container >
@@ -103,124 +100,113 @@ export default function ProductsForm() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Stepper activeStep={activeStep}>
-                <Step>
-                  <StepLabel>Descripcion del Producto</StepLabel>
-                </Step>
-                <Step>
-                  <StepLabel>Descripcion detallada del Producto</StepLabel>
-                </Step>
-                <Step>
-                  <StepLabel>Imagenes del producto</StepLabel>
-                </Step>
-                <Step>
-                  <StepLabel>Envio Gratis</StepLabel>
-                </Step>
-                <Step>
-                  <StepLabel>cinco</StepLabel>
-                </Step>
+                {['Informacion del producto',
+                  'Descripcion detallada del Producto',
+                  'Imagenes del producto',
+                  'Envio Gratis',
+                  'Cargar Producto'].map((data, index) => (
+                    <Step key={index} >
+                      <StepLabel>{data}</StepLabel>
+                    </Step>
+                  ))}
+
               </Stepper>
             </Grid>
 
             <Grid item xs={12}>
               {
                 activeStep === 0 &&
+
                 <>
                   <TextField fullWidth label="Nombre" id="name" name="nombre" onChange={handleInputChange} value={nombre} />
                   <TextField fullWidth label="Marca" id="brand" name="marca" onChange={handleInputChange} value={marca} />
                   <TextField fullWidth label="Precio" id="name" name="precio" onChange={handleInputChange} value={precio} />
                   <TextField fullWidth label="Capacidad" id="name" name="capacidad" onChange={handleInputChange} value={capacidad} />
+                  <InputLabel id="categoria">Categorias</InputLabel>
+                  <Select
+                            labelId="categoria"
+                            id="demo-simple-select"
+                            value={values.categoria}
+                            name="categoria"
+                            onChange={handleInputChange}
+                            fullWidth
+                        >
+                            <MenuItem value={'Computadores'}>Computadores</MenuItem>
+                            <MenuItem value={'Portatiles'}>Portatiles</MenuItem>
+                            <MenuItem value={'Pantallas'}>Pantallas</MenuItem>
+                            <MenuItem value={'Accesorios'}>Accesorios</MenuItem>
+                        </Select>
                 </>
 
               }
               {
                 activeStep === 1 &&
                 <>
-                  <InputLabel id="label-textarea">Descripcion 1</InputLabel>
-                  <TextareaAutosize
-                    labelId="label-textarea"
-                    minRows={6}
-                    placeholder="Ingrese descripcion uno del producto"
-                    style={{ width: 500 }}
-                    onKeyUp={handleDescription}
-                    name="0"
-                    className="cuadro"
 
-                  />
-                  <InputLabel id="label-textarea">Descripcion 2</InputLabel>
-                  <TextareaAutosize
-                    labelId="label-textarea"
-                    minRows={6}
-                    placeholder="Ingrese descripcion dos del producto"
-                    style={{ width: 500 }}
-                    onKeyUp={handleDescription}
-                    name="1"
-                    className="cuadro"
+                  {['0','1','2','3','4'].map((data, index) => (
+                      <TextField
+                        id="outlined-multiline-flexible"
+                        label={`Descripcion ${Number(data)+1} del producto`}
+                        multiline
+                        minRows={4}
+                        name={data}
+                        onChange={handleDescription}
+                        fullWidth
+                        margin="normal"
+                        value={descripcion[data]}
 
-                  />
-                  <InputLabel id="label-textarea">Descripcion 3</InputLabel>
-                  <TextareaAutosize
-                    labelId="label-textarea"
-                    minRows={6}
-                    placeholder="Ingrese descripcion tres del producto"
-                    style={{ width: 500 }}
-                    onKeyUp={handleDescription}
-                    name="2"
-                  // className="cuadro"
+                      />
+                    ))}
 
-                  />
-                  <InputLabel id="label-textarea">Descripcion 4</InputLabel>
-                  <TextareaAutosize
-                    labelId="label-textarea"
-                    minRows={6}
-                    placeholder="Ingrese descripcion cuatro del producto"
-                    style={{ width: 500 }}
-                    onKeyUp={handleDescription}
-                    name="3"
-                  // className="cuadro"
-
-                  />
-                  <InputLabel id="label-textarea">Descripcion 5</InputLabel>
-                  <TextareaAutosize
-                    labelId="label-textarea"
-                    minRows={6}
-                    placeholder="Ingrese descripcion cinco del producto"
-                    style={{ width: 500 }}
-                    onKeyUp={handleDescription}
-                    name="4"
-                  // className="cuadro"
-
-                  />
                 </>
               }
               {
                 activeStep === 2 &&
                 <>
-                  <Stack direction="row" alignItems="center" spacing={2}>
-                    <label htmlFor="contained-button-file">
-                      <Input accept="image/*" id="contained-button-file" multiple type="file" name="images" onChange={handleFileChange} value={images} />
-                      <Button variant="contained" component="span">
-                        Upload
-                      </Button>
-                    </label>
-                    <label htmlFor="icon-button-file">
-                      <Input accept="imagess/*" id="icon-button-file" type="file" multiple name="images" onChange={handleFileChange} value={images} />
-                      <IconButton color="primary" aria-label="upload picture" component="span">
-                        <PhotoCamera />
-                      </IconButton>
-                    </label>
-                  </Stack>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      width: '100%'
+                    }}
+                  >
+                    <AddToPhotosIcon sx={{ color: '#299ac1', marginRight: '10px', fontSize: '35px' }} onClick={handleClickFiles} />
+                    <TextField
+                      margin="normal"
+                      fullWidth
+                      id="text"
+                      label="Seleccionar imagenes del emprendimiento"
+                      autoFocus
+                      readOnly={true}
+                      onClick={handleClickFiles}
+                      value={`Has seleccionado ${Object.keys(imagenes).length} archivos`}
+                      disabled
+                    />
+                    <input
+                      type="file"
+                      id='inputFileChanger'
+                      multiple
+                      accept="image/*"
+                      hidden
+                      name="imagenes"
+                      onChange={handleUploadImage}
+                    />
+                  </Box>
                 </>
               }
               {
                 activeStep === 3 &&
                 <>
-                  <InputLabel id="demo-simple-select-label">Tipo de envio</InputLabel>
+                  <InputLabel id="tipoEnvioLabel">Tipo de envio</InputLabel>
                   <Select
-                    labelId="demo-simple-select-label"
+                    labelId="tipoEnvioLabel"
                     id="demo-simple-select"
-                    value={tipoEnvio}
+                    value={envioGratis}
                     label="Tipo de envio"
-                    onChange={handleEnvio}
+                    onChange={handleInputChange}
+                    name="envioGratis"
+
                   >
                     <MenuItem value={true}>Si tiene envio gratis</MenuItem>
                     <MenuItem value={false}>No tiene envio gratis</MenuItem>

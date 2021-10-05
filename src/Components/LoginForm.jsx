@@ -44,6 +44,8 @@ export default function LoginForm() {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             alert(JSON.stringify(values, null, 2));
+            // e.preventDefault();
+            dispatch(loginEmailPassword(email, password))
         },
     });
 
@@ -109,7 +111,7 @@ export default function LoginForm() {
                             error={formik.touched.password && Boolean(formik.errors.password)}
                             helperText={formik.touched.password && formik.errors.password}
                         />
-                        
+
                         <Button
                             type="button"
                             fullWidth

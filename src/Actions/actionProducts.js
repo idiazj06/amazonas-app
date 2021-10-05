@@ -62,13 +62,14 @@ export const actualizar = (producto) => {
     }
 }
 
-export const crearProduct = (nombre, descripcion, marca, precio, capacidad, envioGratis, images) => {
+export const crearProduct = ( nombre, descripcion, marca, precio,categoria, capacidad, envioGratis, images) => {
     return async (dispatch) => {
         const newProduct = {
             nombre,
             descripcion,
             marca,
             precio,
+            categoria,
             capacidad,
             envioGratis,
             images
