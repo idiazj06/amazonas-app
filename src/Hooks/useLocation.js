@@ -28,6 +28,8 @@ export const useLocation = (initialState) => {
             if (latitude !== undefined && longitude != undefined) {
                 fetchUbicacion()
             }
+        }else{
+            setUbicacion(false)
         }
 
     }, [watch])

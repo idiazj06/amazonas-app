@@ -77,26 +77,36 @@ export default function BarraNavegacion({ login }) {
   let history = useHistory();
   const logged = useSelector(store => store.login)
   const productos = useSelector(store => store.addDetail)
-
-
-  const {products} = productos
-
-
-
-
+  const { products } = productos
   const { name } = logged
+  const dispatch = useDispatch()
+  const [country, region, watch, setWatch, ubicacion] = useLocation()
+  const [searchValue, setSearchValue] = useState('')
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const isMenuOpen = Boolean(anchorEl);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  
   const handleLogin = () => {
     history.push("/auth/login");
   }
 
+  const handleLogout = () => {
+    dispatch(startLogout())
+  }
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const handleLocation = () => {
+    setWatch(!watch)
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  }
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    setSearchValue(e.target.value)
+
+    let searchFilter = products.filter(busq => busq.nombre.toLowerCase().includes(searchValue.toLowerCase()))
+    dispatch(listar(searchFilter))
+  }
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -115,31 +125,10 @@ export default function BarraNavegacion({ login }) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
-
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
+      
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
         vertical: 'top',
@@ -154,169 +143,257 @@ export default function BarraNavegacion({ login }) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+      <Box sx={{ backgroundColor: "#131921", color:'white', padding:2}}>
+        {login ?
+          <Typography
+            variant="div"
+            noWrap
+            component="div"
+            className="pointer" sx={{ marginTop:1, marginBottom:2, cursor: 'pointer' }}
+          >
+            <Typography
+              variant="div"
+              noWrap
+              component="h3"
+            >
+              Hola,{name}
+            </Typography>
+            <Box sx={{ display: 'flex' }}>
+              <Typography variant="div"
+                noWrap
+                component="h5"
+                sx={{ color: '#F3D184' }}
+                onClick={handleLogout}>
+                Cerrar sesion
+              </Typography>
+            </Box>
+          </Typography>
+          :
+          <Typography
+            variant="div"
+            noWrap
+            component="div"
+            className="pointer" sx={{ padding: 1, cursor: 'pointer' }}
+            onClick={handleLogin}
+          >
+            <Typography
+              variant="div"
+              noWrap
+              component="h5"
+            >
+              Hola,Identificate
+            </Typography>
+            <Box sx={{ display: 'flex' }}>
+              <Typography variant="div"
+                noWrap
+                component="h3"
+                sx={{ color: '#F3D184' }}>
+                Iniciar Sesion
+              </Typography>
+            </Box>
+          </Typography>
+        }
+        {
+          ubicacion ?
+            <Box
+              onClick={handleLocation}
+            >
+              <Typography
+                variant="div"
+                noWrap
+                component="h5"
+              >
+                {region},
+              </Typography>
+              <Typography
+                variant="div"
+                noWrap
+                component="h3"
+                sx={{ color: '#F3D184' }}>
+                {country}
+              </Typography>
+            </Box>
+            :
+            <Box
+              onClick={handleLocation}
+            >
+              <Typography variant="div"
+                noWrap
+                component="h3"
+                sx={{ color: '#F3D184' }}>
+                Elige tu dirección
+              </Typography>
+            </Box>
+        }
+        <Search sx={{marginTop:2, marginBottom:2}}>
+          <SearchIconWrapper>
+          </SearchIconWrapper>
+          <StyledInputBase
+            placeholder="Search…"
+            inputProps={{ 'aria-label': 'search' }}
+            onChange={handleSearch}
+          />
+          <SearchIcon />
+        </Search>
+      </Box>
+
+
     </Menu>
   );
-
-  const dispatch = useDispatch()
-  const handleLogout = () => {
-    dispatch(startLogout())
-  }
-
-  const [country, region, watch, setWatch, ubicacion] = useLocation()
-
-
-  const handleLocation = () => {
-    setWatch(true)
-
-  }
-  const [searchValue, setSearchValue] = useState('')
-
-  const handleSearch = (e) =>{
-    e.preventDefault()
-    setSearchValue(e.target.value)
-    
-    let searchFilter = products.filter(busq =>busq.nombre.toLowerCase().includes(searchValue.toLowerCase()))
-    dispatch(listar(searchFilter))
-  }
-
-
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar sx={{ backgroundColor: "#131921" }}>
-          <img src="https://res.cloudinary.com/duaokxfsp/image/upload/v1632197422/Amazonas/logo-amazon_wzvnaw.png" alt="" />
+          <Box sx={{ flex: { xs: 1, sm: 0 } }}>
+            <img src="https://res.cloudinary.com/duaokxfsp/image/upload/v1632197422/Amazonas/logo-amazon_wzvnaw.png" alt="" />
+          </Box>
+
           <Typography
             variant="p"
             noWrap
             component="div"
-            sx={{ display: { xs: "none", sm: "block" }, ml: 5 }}
+            sx={{ display: { xs: "none", md: "block" }, ml: 5 }}
           >
             <LocationOnOutlinedIcon />
           </Typography>
 
           {
             ubicacion ?
-              <Typography
-                variant="p"
-                noWrap
-                component="div"
-                sx={{ display: { xs: "none", sm: "block" } }}
-              >
-                {country} ,<br />
-                {region}
-              </Typography>
-              :
-              <Typography
-                variant="p"
-                noWrap
-                component="div"
-                sx={{ display: { xs: "none", sm: "block", cursor:'pointer'} }}
+
+              <Box
+                sx={{ display: { xs: "none", md: "flex" }, flex: { sm: 1, md: 0 }, cursor: 'pointer' }}
                 onClick={handleLocation}
               >
-                Hola
-                <p>Elige tu dirección</p>
-              </Typography>
+                <Typography
+                  variant="div"
+                  noWrap
+                  component="h5"
+                >
+                  {region},
+                </Typography>
+                <Typography
+                  variant="div"
+                  noWrap
+                  component="h3"
+                  sx={{ color: '#F3D184' }}>
+                  {country}
+                </Typography>
+              </Box>
+
+              :
+
+              <Box
+                sx={{ display: { xs: "none", md: "flex" }, flex: { sm: 1, md: 0 }, cursor: 'pointer' }}
+                onClick={handleLocation}
+              >
+                <Typography
+                  variant="div"
+                  noWrap
+                  component="h5"
+                >
+                  Hola
+                  <Typography variant="div"
+                    noWrap
+                    component="h3"
+                    sx={{ color: '#F3D184' }}>
+                    Elige tu dirección
+                  </Typography>
+                </Typography>
+              </Box>
           }
 
 
-
-          <Search >
-            <SearchIconWrapper>
-
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={handleSearch}
-
-            />
-            <SearchIcon />
-          </Search>
-
-          <Box spacing={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginLeft: 2 }}>
-
-            {login ?
-              <Typography
-                variant="div"
-                noWrap
-                component="div"
-                className="pointer" sx={{ padding: 1, cursor: 'pointer'}}
-                onClick={handleLogout}
-
-              >
-                Hola,{name}
-                <Box sx={{ display: 'flex' }}>
-                  <p>Cerrar sesion</p>
-                </Box>
-              </Typography>
-              :
-              <Typography
-                variant="div"
-                noWrap
-                component="div"
-                className="pointer" sx={{ padding: 1, cursor: 'pointer'}}
-                onClick={handleLogin}
-              >
-                Hola,Identificate
-                <Box sx={{ display: 'flex' }}>
-                  <p>Iniciar sesion</p>
-                </Box>
-              </Typography>
-            }
-
-            
-
+          <Box
+            sx={{ display: { xs: "none", sm: "flex" }, flex: 1 }}
+          >
+            <Search>
+              <SearchIconWrapper>
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ 'aria-label': 'search' }}
+                onChange={handleSearch}
+              />
+              <SearchIcon />
+            </Search>
           </Box>
 
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
+          <Box spacing={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 2 }}>
+
+            <Box
+              sx={{ display: { xs: "none", md: "block" } }}
             >
-              <MoreIcon />
-            </IconButton>
+              {login ?
+                <Typography
+                  variant="div"
+                  noWrap
+                  component="div"
+                  className="pointer" sx={{ padding: 1, cursor: 'pointer' }}
+                  onClick={handleLogout}
+                >
+                  <Typography
+                    variant="div"
+                    noWrap
+                    component="h3"
+                  >
+                    Hola,{name}
+                  </Typography>
+                  <Box sx={{ display: 'flex' }}>
+                    <Typography variant="div"
+                      noWrap
+                      component="h5"
+                      sx={{ color: '#F3D184' }}>
+                      Cerrar sesion
+                    </Typography>
+                  </Box>
+                </Typography>
+                :
+                <Typography
+                  variant="div"
+                  noWrap
+                  component="div"
+                  className="pointer" sx={{ padding: 1, cursor: 'pointer' }}
+                  onClick={handleLogin}
+                >
+                  <Typography
+                    variant="div"
+                    noWrap
+                    component="h5"
+                  >
+                    Hola,Identificate
+                  </Typography>
+                  <Box sx={{ display: 'flex' }}>
+                    <Typography variant="div"
+                      noWrap
+                      component="h3"
+                      sx={{ color: '#F3D184' }}>
+                      Iniciar Sesion
+                    </Typography>
+                  </Box>
+                </Typography>
+              }
+            </Box>
+
+            <Box sx={{ display: { xs: 'flex', md: 'none'} }}>
+              <IconButton
+                size="large"
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+              >
+                <MoreIcon />
+
+              </IconButton>
+            </Box>
           </Box>
+
+
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
     </Box>
   );
 }
