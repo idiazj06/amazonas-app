@@ -5,12 +5,13 @@ import { styled } from '@mui/material/styles';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { useHistory } from "react-router-dom";
 import { useForm } from '../../Hooks/useForm'
-import { doc, updateDoc } from '@firebase/firestore';
-import { db } from '../../Firebase/firebaseConfig';
 import { deleteProduct, listDetail, updateProduct } from '../../Actions/actionProducts';
 import { useDispatch } from 'react-redux';
-import { fileUpload } from '../../Helpers/FileUpload';
 import { useImages } from '../../Hooks/useImages';
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
+
 
 
 const Input = styled('input')({
@@ -18,9 +19,15 @@ const Input = styled('input')({
 });
 
 
+
+
+
+
 export default function DrawerEditar({ productos }) {
     const dispatch = useDispatch()
     let history = useHistory();
+
+    console.log(productos.products.categoria)
 
     const {
         id,
@@ -28,6 +35,7 @@ export default function DrawerEditar({ productos }) {
         descripcion,
         marca,
         precio,
+        categoria,
         capacidad,
         envioGratis,
         images } = productos.products;
@@ -37,7 +45,11 @@ export default function DrawerEditar({ productos }) {
 
     const [description, setDescription] = useState(descripcion)
 
-    const [data, setData] = useState({
+    const handleClickFiles = () => {
+        document.querySelector('#inputFileChanger').click()
+    }
+
+    const [values, handleInputChange, setValues, reset] = useForm({
         id: id,
         nombre: nombre,
         descripcion: description,
@@ -46,19 +58,7 @@ export default function DrawerEditar({ productos }) {
         capacidad: capacidad,
         envioGratis: envioGratis,
         images: imagenes.images
-
     })
-
-    const [values, handleInputChange,setValues] = useForm({
-        id: id,
-        nombre: nombre,
-        descripcion: description,
-        marca: marca,
-        precio: precio,
-        capacidad: capacidad,
-        envioGratis: envioGratis,
-        images: imagenes.images
-      })
 
     const [state, setState] = useState({
         top: false,
@@ -103,6 +103,8 @@ export default function DrawerEditar({ productos }) {
         }
     }
     const handleReset = () => {
+        reset()
+        setActiveStep(0)
     }
 
     const handleDescription = ({ target }) => {
@@ -112,10 +114,9 @@ export default function DrawerEditar({ productos }) {
         console.log(id)
         setValues({ ...values, descripcion: description })
         setValues({ ...values, images: imagenes.images })
-        console.log(values)
-        console.log(imagenes)
-        // dispatch(updateProduct(id, values.nombre, description, marca, precio, capacidad, envioGratis, imagenes.images))
-        // dispatch(listDetail(values))
+        dispatch(updateProduct(id, values.nombre, description, marca, precio,categoria, capacidad, envioGratis, imagenes.images))
+        dispatch(listDetail(values))
+        setActiveStep(0)
     }
     const handleDelete = () => {
         dispatch(deleteProduct(id))
@@ -127,8 +128,6 @@ export default function DrawerEditar({ productos }) {
             <Box
                 sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
                 role="presentation"
-            // onClick={toggleDrawer(anchor, false)}
-            // onKeyDown={toggleDrawer(anchor, false)}
             > <Box
                 component="form"
                 sx={{
@@ -147,21 +146,15 @@ export default function DrawerEditar({ productos }) {
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <Stepper activeStep={activeStep}>
-                                    <Step>
-                                        <StepLabel>Descripcion del Producto</StepLabel>
-                                    </Step>
-                                    <Step>
-                                        <StepLabel>Descripcion detallada del Producto</StepLabel>
-                                    </Step>
-                                    <Step>
-                                        <StepLabel>Imagenes del producto</StepLabel>
-                                    </Step>
-                                    <Step>
-                                        <StepLabel>Envio Gratis</StepLabel>
-                                    </Step>
-                                    <Step>
-                                        <StepLabel>cinco</StepLabel>
-                                    </Step>
+                                    {['Informacion del producto',
+                                        'Descripcion detallada del Producto',
+                                        'Imagenes del producto',
+                                        'Envio Gratis',
+                                        'Actualizar Producto'].map((data, index) => (
+                                            <Step key={index} >
+                                                <StepLabel>{data}</StepLabel>
+                                            </Step>
+                                        ))}
                                 </Stepper>
                             </Grid>
 
@@ -169,95 +162,84 @@ export default function DrawerEditar({ productos }) {
                                 {
                                     activeStep === 0 &&
                                     <>
-                                        <TextField minRows={6} fullWidth label="Nombre" id="name" name="nombre" defaultValue={nombre} onChange={handleInputChange} />
-                                        <TextField minRows={6} fullWidth label="Marca" id="brand" name="marca" value={marca} onChange={handleInputChange} />
-                                        <TextField minRows={6} fullWidth label="Precio" id="name" name="precio" value={precio} onChange={handleInputChange} />
-                                        <TextField minRows={6} fullWidth label="Capacidad" id="name" name="capacidad" value={capacidad} onChange={handleInputChange} />
+                                        <TextField minRows={6} fullWidth label="Nombre" id="name" name="nombre" defaultValue={nombre} onChange={handleInputChange} sx={{marginBottom: 2 }} />
+                                        <TextField minRows={6} fullWidth label="Marca" id="brand" name="marca" value={marca} onChange={handleInputChange} sx={{marginBottom: 2 }} />
+                                        <TextField minRows={6} fullWidth label="Precio" id="name" name="precio" value={precio} onChange={handleInputChange} sx={{marginBottom: 2 }} />
+                                        <TextField minRows={6} fullWidth label="Capacidad" id="name" name="capacidad" value={capacidad} onChange={handleInputChange} sx={{marginBottom: 2 }} />
+                                        <InputLabel id="categoria">Categoria</InputLabel>
+                                        <Select
+                                            labelId="categoria"
+                                            id="demo-simple-select"
+                                            value={categoria}
+                                            name="categoria"
+                                            onChange={handleInputChange}
+                                            fullWidth
+                                            disabled
+                                            
+                                        >
+                                            <MenuItem value={'Computadores'}>Computadores</MenuItem>
+                                            <MenuItem value={'Portatiles'}>Portatiles</MenuItem>
+                                            <MenuItem value={'Pantallas'}>Pantallas</MenuItem>
+                                            <MenuItem value={'Accesorios'}>Accesorios</MenuItem>
+                                        </Select>
                                     </>
 
                                 }
                                 {
                                     activeStep === 1 &&
                                     <>
-                                        <InputLabel id="label-textarea">Descripcion 1</InputLabel>
-                                        <TextareaAutosize
-                                            labelId="label-textarea"
-                                            minRows={6}
-                                            placeholder="Ingrese descripcion uno del producto"
-                                            style={{ width: 500 }}
-                                            defaultValue={descripcion[0]}
-                                            name="0"
-                                            className="cuadro"
-                                            onChange={handleDescription}
 
-                                        />
-                                        <InputLabel id="label-textarea">Descripcion 2</InputLabel>
-                                        <TextareaAutosize
-                                            labelId="label-textarea"
-                                            minRows={6}
-                                            placeholder="Ingrese descripcion dos del producto"
-                                            style={{ width: 500 }}
-                                            defaultValue={descripcion[1]}
-                                            name="1"
-                                            className="cuadro"
-                                            onChange={handleDescription}
+                                        {['0', '1', '2', '3', '4'].map((data, index) => (
+                                            <TextField
+                                                id="outlined-multiline-flexible"
+                                                label={`Descripcion ${Number(data) + 1} del producto`}
+                                                multiline
+                                                minRows={4}
+                                                name={data}
+                                                onChange={handleDescription}
+                                                fullWidth
+                                                margin="normal"
+                                                value={descripcion[data]}
 
-                                        />
-                                        <InputLabel id="label-textarea">Descripcion 3</InputLabel>
-                                        <TextareaAutosize
-                                            labelId="label-textarea"
-                                            minRows={6}
-                                            placeholder="Ingrese descripcion tres del producto"
-                                            style={{ width: 500 }}
-                                            defaultValue={descripcion[2]}
-                                            name="2"
-                                            onChange={handleDescription}
-                                        // className="cuadro"
+                                            />
+                                        ))}
 
-                                        />
-                                        <InputLabel id="label-textarea">Descripcion 4</InputLabel>
-                                        <TextareaAutosize
-                                            labelId="label-textarea"
-                                            minRows={6}
-                                            placeholder="Ingrese descripcion cuatro del producto"
-                                            style={{ width: 500 }}
-                                            defaultValue={descripcion[3]}
-                                            name="3"
-                                            onChange={handleDescription}
-                                        // className="cuadro"
-
-                                        />
-                                        <InputLabel id="label-textarea">Descripcion 5</InputLabel>
-                                        <TextareaAutosize
-                                            labelId="label-textarea"
-                                            minRows={6}
-                                            placeholder="Ingrese descripcion cinco del producto"
-                                            style={{ width: 500 }}
-                                            defaultValue={descripcion[4]}
-                                            name="4"
-                                            onChange={handleDescription}
-                                        // className="cuadro"
-
-                                        />
                                     </>
                                 }
                                 {
                                     activeStep === 2 &&
                                     <>
-                                        <Stack direction="row" alignItems="center" spacing={2}>
-                                            <label htmlFor="contained-button-file">
-                                                <Input accept="image/*" id="contained-button-file" multiple type="file" name="images" onChange={handleFileChange} />
-                                                <Button variant="contained" component="span">
-                                                    Upload
-                                                </Button>
-                                            </label>
-                                            <label htmlFor="icon-button-file">
-                                                <Input accept="imagess/*" id="icon-button-file" type="file" multiple name="images" onChange={handleFileChange} />
-                                                <IconButton color="primary" aria-label="upload picture" component="span">
-                                                    <PhotoCamera />
-                                                </IconButton>
-                                            </label>
-                                        </Stack>
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
+                                                width: '100%'
+                                            }}
+                                        >
+                                            <AddToPhotosIcon sx={{ color: '#299ac1', marginRight: '10px', fontSize: '35px' }} onClick={handleClickFiles} />
+                                            <TextField
+                                                margin="normal"
+                                                fullWidth
+                                                id="text"
+                                                label="Seleccionar imagenes del emprendimiento"
+                                                autoFocus
+                                                readOnly={true}
+                                                onClick={handleClickFiles}
+                                                value={`Has seleccionado ${Object.values(imagenes.images).length} archivos`}
+                                                disabled
+                                            />
+                                            <input
+                                                type="file"
+                                                id='inputFileChanger'
+                                                multiple
+                                                accept="image/*"
+                                                hidden
+                                                name="imagenes"
+                                                onChange={handleFileChange}
+                                            />
+                                        </Box>
+
                                     </>
                                 }
                                 {
@@ -269,6 +251,7 @@ export default function DrawerEditar({ productos }) {
                                             id="demo-simple-select"
                                             value={envioGratis}
                                             label="Tipo de envio"
+                                            fullWidth
 
                                         >
                                             <MenuItem value={true}>Si tiene envio gratis</MenuItem>
@@ -278,26 +261,28 @@ export default function DrawerEditar({ productos }) {
                                 }
                                 {
                                     activeStep === 4 &&
-                                    <>
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                         <Typography variant="h5" component="div">
-                                            Estas seguro que deseas cargar este producto?
+                                            ¿Estas seguro que deseas cargar este producto?
                                         </Typography>
-                                        <Button variant="contained" onClick={handleUpdate} >Enviar</Button>
-                                        <Button variant='contained' onClick={handleReset}>Cancelar</Button>
-                                    </>
+                                        <Box sx={{ padding: 2 }}>
+                                            <Button variant="contained" onClick={handleUpdate} sx={{ marginRight: 2, marginLeft: 2 }} >Enviar</Button>
+                                            <Button variant='outlined' onClick={handleReset} sx={{ marginRight: 2, marginLeft: 2 }}>Cancelar</Button>
+                                        </Box>
+                                    </Box>
                                 }
 
                             </Grid>
 
-                            <Grid item xs={12} sx={{ marginBottom: 2 }}>
+                            <Grid item xs={12} sx={{ marginBottom: 2, display: 'flex', justifyContent: 'center' }}>
                                 {
                                     activeStep < 4
                                         ?
-                                        <><Button variant="outlined" onClick={handleNextStep} >Siguiente</Button></>
+                                        <><Button variant="contained" onClick={handleNextStep} sx={{ marginRight: 2, marginLeft: 2 }} >Siguiente</Button></>
                                         :
                                         ''
                                 }
-                                <Button variant="outlined" onClick={handlePrevStep} >Atras </Button>
+                                <Button variant="outlined" onClick={handlePrevStep} sx={{ marginRight: 2, marginLeft: 2 }}>Atras </Button>
                             </Grid>
                         </Grid>
                     </Box>
@@ -309,8 +294,10 @@ export default function DrawerEditar({ productos }) {
 
     return (
         <>
-            <Button onClick={toggleDrawer('top', true)} variant='contained' sx={{ color: 'white' }}>EDITAR</Button>
-            <Button onClick={toggleDrawer('top', true)} variant='contained' sx={{ color: 'red' }} onClick={handleDelete}>ELIMINAR</Button>
+
+            <Button onClick={toggleDrawer('top', true)} variant='contained' sx={{ color: 'white', marginRight: 2, backgroundColor: '#F3D184' }}><ModeEditOutlineIcon />EDITAR</Button>
+            <Button onClick={toggleDrawer('top', true)} variant='contained' sx={{ color: 'white', backgroundColor: 'red' }} onClick={handleDelete}><DeleteOutlineRoundedIcon />ELIMINAR</Button>
+
 
             <SwipeableDrawer
                 anchor={'top'}

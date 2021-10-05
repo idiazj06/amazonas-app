@@ -51,7 +51,7 @@ export default function DetailsCard() {
                             }
                         }} />
                     </Grid>
-                    <Grid item xs={8} md={5}>
+                    <Grid item xs={8} md={4.5}>
                         <Typography component="div" variant="h5">
                             {nombre}
                         </Typography>
@@ -73,7 +73,7 @@ export default function DetailsCard() {
                         </ul>
 
                     </Grid>
-                    <Grid item xs={8} md={2}>
+                    <Grid item xs={8} md={2.5}>
                     <DrawerEditar productos={productos}/>
                            
                     </Grid>

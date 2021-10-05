@@ -19,6 +19,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { loginSincrono } from "../Actions/actionLogin";
 import Products from "../Pages/Products";
 import Details from "../Pages/Details";
+import Loading from "../Components/Loading";
 
 
 export default function AppRouter() {
@@ -42,7 +43,7 @@ export default function AppRouter() {
     }, [dispatch, setChecking])
 
     if (checking) {
-        return <h1>Cargando...</h1>;
+        return <Loading/>;
     }
     return (
         <Router>
