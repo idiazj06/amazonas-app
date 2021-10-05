@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Stepper, Step, StepLabel, Button, Container, Box, Grid, TextField, Typography, Stack, InputLabel, IconButton, MenuItem, Select, TextareaAutosize } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { useForm } from '../Hooks/useForm'
 import { useDispatch } from 'react-redux';
 import { fileUpload } from '../Helpers/FileUpload';
 import { crearProduct } from '../Actions/actionProducts'
 import { useHistory } from "react-router-dom";
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
-import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 
 const Input = styled('input')({
   display: 'none',
@@ -27,12 +25,12 @@ export default function ProductsForm() {
     descripcion: '',
     marca: '',
     precio: '',
-    categoria:'',
+    categoria: '',
     capacidad: '',
     envioGratis: '',
     images: ''
   })
-  let { nombre, descripcion, marca, precio,categoria, capacidad, envioGratis, images } = values;
+  let { nombre, descripcion, marca, precio, categoria, capacidad, envioGratis, images } = values;
 
   const handleClickFiles = () => {
     document.querySelector('#inputFileChanger').click()
@@ -45,7 +43,7 @@ export default function ProductsForm() {
       fileUpload(file)
         .then(resp => {
           imagenes[i] = resp
-          setValues({ ...values, images: imagenes})
+          setValues({ ...values, images: imagenes })
         }).catch(err => {
           console.log(err.message)
         })
@@ -80,7 +78,7 @@ export default function ProductsForm() {
     e.preventDefault()
     console.log(values)
     console.log(imagenes)
-    dispatch(crearProduct(  nombre, descripcion, marca, precio,categoria, capacidad, envioGratis, images ))
+    dispatch(crearProduct(nombre, descripcion, marca, precio, categoria, capacidad, envioGratis, images))
     reset()
     setActiveStep(0)
   }
@@ -118,24 +116,24 @@ export default function ProductsForm() {
                 activeStep === 0 &&
 
                 <>
-                  <TextField fullWidth label="Nombre" id="name" name="nombre" onChange={handleInputChange} value={nombre} />
-                  <TextField fullWidth label="Marca" id="brand" name="marca" onChange={handleInputChange} value={marca} />
-                  <TextField fullWidth label="Precio" id="name" name="precio" onChange={handleInputChange} value={precio} />
-                  <TextField fullWidth label="Capacidad" id="name" name="capacidad" onChange={handleInputChange} value={capacidad} />
+                  <TextField fullWidth label="Nombre" id="name" name="nombre" onChange={handleInputChange} value={nombre} sx={{ marginBottom: 2 }} />
+                  <TextField fullWidth label="Marca" id="brand" name="marca" onChange={handleInputChange} value={marca} sx={{ marginBottom: 2 }} />
+                  <TextField fullWidth label="Precio" id="name" name="precio" onChange={handleInputChange} value={precio} sx={{ marginBottom: 2 }} />
+                  <TextField fullWidth label="Capacidad" id="name" name="capacidad" onChange={handleInputChange} value={capacidad} sx={{ marginBottom: 2 }} />
                   <InputLabel id="categoria">Categorias</InputLabel>
                   <Select
-                            labelId="categoria"
-                            id="demo-simple-select"
-                            value={values.categoria}
-                            name="categoria"
-                            onChange={handleInputChange}
-                            fullWidth
-                        >
-                            <MenuItem value={'Computadores'}>Computadores</MenuItem>
-                            <MenuItem value={'Portatiles'}>Portatiles</MenuItem>
-                            <MenuItem value={'Pantallas'}>Pantallas</MenuItem>
-                            <MenuItem value={'Accesorios'}>Accesorios</MenuItem>
-                        </Select>
+                    labelId="categoria"
+                    id="demo-simple-select"
+                    value={values.categoria}
+                    name="categoria"
+                    onChange={handleInputChange}
+                    fullWidth
+                  >
+                    <MenuItem value={'Computadores'}>Computadores</MenuItem>
+                    <MenuItem value={'Portatiles'}>Portatiles</MenuItem>
+                    <MenuItem value={'Pantallas'}>Pantallas</MenuItem>
+                    <MenuItem value={'Accesorios'}>Accesorios</MenuItem>
+                  </Select>
                 </>
 
               }
@@ -143,20 +141,20 @@ export default function ProductsForm() {
                 activeStep === 1 &&
                 <>
 
-                  {['0','1','2','3','4'].map((data, index) => (
-                      <TextField
-                        id="outlined-multiline-flexible"
-                        label={`Descripcion ${Number(data)+1} del producto`}
-                        multiline
-                        minRows={4}
-                        name={data}
-                        onChange={handleDescription}
-                        fullWidth
-                        margin="normal"
-                        value={descripcion[data]}
+                  {['0', '1', '2', '3', '4'].map((data, index) => (
+                    <TextField
+                      id="outlined-multiline-flexible"
+                      label={`Descripcion ${Number(data) + 1} del producto`}
+                      multiline
+                      minRows={4}
+                      name={data}
+                      onChange={handleDescription}
+                      fullWidth
+                      margin="normal"
+                      value={descripcion[data]}
 
-                      />
-                    ))}
+                    />
+                  ))}
 
                 </>
               }
@@ -206,6 +204,7 @@ export default function ProductsForm() {
                     label="Tipo de envio"
                     onChange={handleInputChange}
                     name="envioGratis"
+                    fullWidth
 
                   >
                     <MenuItem value={true}>Si tiene envio gratis</MenuItem>
@@ -215,27 +214,31 @@ export default function ProductsForm() {
               }
               {
                 activeStep === 4 &&
-                <>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <Typography variant="h5" component="div">
                     Estas seguro que deseas cargar este producto?
                   </Typography>
-                  <Button variant="contained" type="submit" >Enviar</Button>
-                  <Button variant='contained' onClick={handleReset}>Cancelar</Button>
-                </>
+                  <Box sx={{padding:2}}>
+                    <Button variant="contained" type="submit" sx={{ marginRight: 2, marginLeft: 2 }}>Enviar</Button>
+                    <Button variant='outlined' onClick={handleReset} sx={{ marginRight: 2, marginLeft: 2 }}>Cancelar</Button>
+                  </Box>
+                </Box>
               }
 
             </Grid>
 
-            <Grid item xs={12}>
-              <Button
-                variant="outlined"
-                onClick={handleNextStep}
-              >
-                Siguiente
-              </Button>
+            <Grid item xs={12} sx={{ marginBottom: 2, display: 'flex', justifyContent: 'center' }}>
+              {
+                activeStep < 4
+                  ?
+                  <><Button variant="contained" onClick={handleNextStep} sx={{ marginRight: 2, marginLeft: 2 }} >Siguiente</Button></>
+                  :
+                  ''
+              }
               <Button
                 variant="outlined"
                 onClick={handlePrevStep}
+                sx={{ marginRight: 2, marginLeft: 2 }}
               >
                 Atras
               </Button>

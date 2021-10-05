@@ -86,9 +86,7 @@ export default function BarraNavegacion({ login }) {
 
   const { name } = logged
 
-  const handleNav = () => {
-    history.push("/addprod");
-  }
+  
   const handleLogin = () => {
     history.push("/auth/login");
   }
@@ -299,7 +297,7 @@ export default function BarraNavegacion({ login }) {
               </Typography>
             }
 
-            <Button sx={{color:'white'}} onClick={handleNav}>Agregar <br/>nuevo producto</Button>
+            
 
           </Box>
 

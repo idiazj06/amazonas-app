@@ -19,20 +19,21 @@ export default function Cards() {
 
     console.log(products)
 
-    const handleNav = () =>{
+    const handleNav = () => {
         history.push("/addprod");
     }
 
     return (
         <Container>
-            
             {
-                products.map(data => (
-                    <Box >
+                products.map((data,index) => (
+                    <Box key={index}>
                         <Link
-                        to='/details'
-                        onClick={()=>{dispatch(listDetail(data))}}>
-                            <Card sx={{ marginTop: 5 }}>
+                            to='/details'
+                            onClick={() => { dispatch(listDetail(data)) }}
+                            style={{ textDecoration: 'none'}}>
+                            
+                            <Card sx={{ marginTop: 5, marginBottom: 5 }}>
                                 <Grid container
                                     direction="row"
                                     justifyContent="center"
@@ -42,7 +43,7 @@ export default function Cards() {
                                             component="img"
                                             sx={{ width: 240, padding: 2 }}
                                             image={data.images[2]}
-                                            alt="Live from space album cover"
+                                            alt={data.nombre}
                                         />
                                     </Grid>
                                     <Grid item xs={12} md={9}>

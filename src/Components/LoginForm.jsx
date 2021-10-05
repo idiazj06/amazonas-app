@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Grid, Box, Typography, Container } from '@mui/material';
+import { Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useForm } from '../Hooks/useForm'
@@ -7,13 +7,15 @@ import { loginEmailPassword, loginGoogle } from '../Actions/actionLogin';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import { Link } from 'react-router-dom';
+
 
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                Your Website
+            <Link color="inherit" to="https://github.com/idiazj06">
+                Amazonas
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -118,6 +120,7 @@ export default function LoginForm() {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                             onClick={handleGoogle}
+                            sx={{backgroundColor:'#DE5246',marginTop:2,marginBottom:1}}
                         >
                             <GoogleIcon sx={{ marginRight: 2 }} />Continuar con google
                         </Button>
@@ -127,17 +130,14 @@ export default function LoginForm() {
                             variant="contained"
                             sx={{ mb: 2 }}
                         >
-                            Sign In
+                            Iniciar sesion
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
-                                    {"Don't have an account? Sign Up"}
+                                <Link to="/auth/register" variant="body2">
+                                    {"¿Aun no tienes una cuenta? Registrate"}
                                 </Link>
                             </Grid>
                         </Grid>

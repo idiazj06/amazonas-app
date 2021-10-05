@@ -21,13 +21,14 @@ export const eliminar = (producto) => {
     }
 }
 
-export const updateProduct = (id,nombre, descripcion, marca, precio, capacidad, envioGratis, images) => {
+export const updateProduct = (id,nombre, descripcion, marca, precio,categoria, capacidad, envioGratis, images) => {
     return  async (dispatch,getState) => {
         const newProduct = {
             nombre:nombre,
             descripcion:descripcion,
             marca:marca,
             precio:precio,
+            categoria:categoria,
             capacidad:capacidad,
             envioGratis:envioGratis,
             images:images
