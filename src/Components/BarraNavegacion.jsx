@@ -243,7 +243,7 @@ export default function BarraNavegacion({ login }) {
                 variant="p"
                 noWrap
                 component="div"
-                sx={{ display: { xs: "none", sm: "block" } }}
+                sx={{ display: { xs: "none", sm: "block", cursor:'pointer'} }}
                 onClick={handleLocation}
               >
                 Hola
