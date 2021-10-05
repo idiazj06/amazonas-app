@@ -32,17 +32,27 @@ npm install
 
 ## 🔍 Vistas 
 
-### 💻 Desktop
 
-<imagen aquí>
+**LOGIN**
+![alt text](https://res.cloudinary.com/duaokxfsp/image/upload/v1633415271/Amazonas/images/Captura1_wch7dv.png)
 
-### 📱 Mobile
+**REGISTER**
+![alt text](https://res.cloudinary.com/duaokxfsp/image/upload/v1633415272/Amazonas/images/Captura2_em9ecx.png)
 
-<imagen aquí>
+**HOME**
+![alt text](https://res.cloudinary.com/duaokxfsp/image/upload/v1633415273/Amazonas/images/Captura3_vkou76.png)
 
-## 📌 Stack
+**ADD PRODUCT**
+![alt text](https://res.cloudinary.com/duaokxfsp/image/upload/v1633415274/Amazonas/images/Captura4_cpgoiw.png)
 
-<escribe aquí>
+**DETAIL PRODUCT**
+![alt text](https://res.cloudinary.com/duaokxfsp/image/upload/v1633415271/Amazonas/images/Captura_5_fsfmkg.png)
+
+**EDIT PRODUCT**
+![alt text](https://res.cloudinary.com/duaokxfsp/image/upload/v1633415275/Amazonas/images/Captura6_y5f3k8.png)
+
+
+
 
 ## 🌟 Autor
 
