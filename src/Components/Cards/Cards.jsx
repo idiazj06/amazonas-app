@@ -51,12 +51,12 @@ export default function Cards() {
                                             {data.nombre}
                                         </Typography>
                                         <Typography component="div" variant="span">
-                                            US$ {data.precio}
+                                            US$ <Typography variant="span"sx={{color:'green'}}>{data.precio}</Typography>
                                         </Typography>
                                         {data.envioGratis
                                             &&
                                             <Typography component="div" variant="span">
-                                                Envío GRATIS a Colombia
+                                                Envío <Typography variant="span" sx={{color:'orange'}}>GRATIS</Typography> a Colombia
                                             </Typography>
                                         }
                                     </Grid>

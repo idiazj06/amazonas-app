@@ -73,14 +73,7 @@ export default function AppRouter() {
                 />
 
 
-                {/* 
-                <PrivateRoute
-                    exact
-                    path="/"
-                    component={''}
-                    isAuthenticated={isLooggedIn}
-                /> */}
-                <Redirect to="/auth" />
+                <Redirect to="/products" />
 
             </Switch>
         </Router>
