@@ -5,10 +5,6 @@ import { Link, useHistory } from "react-router-dom";
 import { listDetail } from '../../Actions/actionProducts';
 
 
-
-
-
-
 export default function Cards() {
 
     let history = useHistory();
@@ -51,7 +47,7 @@ export default function Cards() {
                                             {data.nombre}
                                         </Typography>
                                         <Typography component="div" variant="span">
-                                            US$ <Typography variant="span"sx={{color:'green'}}>{data.precio}</Typography>
+                                            US$ <Typography variant="span"sx={{color:'green'}}>{Number(data.precio).toFixed(2)}</Typography>
                                         </Typography>
                                         {data.envioGratis
                                             &&

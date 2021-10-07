@@ -57,6 +57,8 @@ export default function ProductsForm() {
 
   const handleReset = () => {
     reset()
+    setImagenes([])
+    setDescription([])
     setActiveStep(0)
   }
 
@@ -80,6 +82,8 @@ export default function ProductsForm() {
     console.log(imagenes)
     dispatch(crearProduct(nombre, descripcion, marca, precio, categoria, capacidad, envioGratis, images))
     reset()
+    setImagenes([])
+    setDescription([])
     setActiveStep(0)
   }
 
