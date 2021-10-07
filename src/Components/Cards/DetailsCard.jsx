@@ -60,7 +60,7 @@ export default function DetailsCard() {
                         </Typography>
                         <Divider />
                         <Typography variant="subtitle1" gutterBottom component="span">
-                            Precio:<Typography variant="h6" gutterBottom component="span"> ${precio}</Typography>
+                            Precio:<Typography variant="h6" sx={{color:'orange', fontWeight:'520'}} gutterBottom component="span"> ${Number(precio).toFixed(2)}</Typography>
                             {envioGratis &&
                                 <Typography variant="subtitle1" gutterBottom component="span"> Envio GRATIS</Typography>}
                         </Typography>
