@@ -199,14 +199,14 @@ export default function BarraNavegacion({ login }) {
               onClick={handleLocation}
             >
               <Typography
-                variant="div"
+                variant="h5"
                 noWrap
                 component="h5"
               >
                 {region},
               </Typography>
               <Typography
-                variant="div"
+                variant="h3"
                 noWrap
                 component="h3"
                 sx={{ color: '#F3D184' }}>
@@ -262,7 +262,7 @@ export default function BarraNavegacion({ login }) {
             ubicacion ?
 
               <Box
-                sx={{ display: { xs: "none", md: "flex" }, flex: { sm: 1, md: 0 }, cursor: 'pointer' }}
+                sx={{ display: { xs: "none", md: "block"  }, flex: { sm: 1, md: 0 }, cursor: 'pointer' }}
                 onClick={handleLocation}
               >
                 <Typography
